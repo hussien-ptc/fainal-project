@@ -3,26 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-class Taskcontroller extends Controller
+use Illuminate\Support\Facades\DB;
+use App\Models\Task;
+class TaskController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index(){
-        $tasks=[
-            'task-1'=>'Maker your assignment',
-            'task-2'=>'Check your phone',
-            'task-3'=>'Watch a match'
-            ];
-         return view('contact',compact('tasks'));
+
+      //  $tasks = DB::table('tasks')->get();
+$tasks= Task::orderBy('name','Desc')->paginate(2);
+        return view('tasks', compact('tasks'));
 
     }
-    public function huss(){
+    public function store(Request $request){
 
-        $name = $_REQUEST['name'];
-        return view('about',compact('name'));
+//         DB::table('tasks')->insert([
+// 'name' => $request-> name,
+// 'created_at' => now(),
+// 'updated_at' => now()
+//     ]);
+    $task = new Task;
+
+    $task->name = $request->name;
+
+    $task->save();
+
+return redirect()->back();
+
     }
-    public function hus(){
-        $name ='Ahmed';
-        return view('about',compact('name'));
+    public function delete ($id){
+                // DB::table('tasks')->where('id','=',$id)->delete();
+                Task::find($id)->delete();
+                // Task::destroy($id);
+
+
+                return redirect()->back();
     }
 
 }

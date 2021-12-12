@@ -1,35 +1,19 @@
 <?php
-
-use App\Http\Controllers\Taskcontroller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaskController;
+use function GuzzleHttp\Promise\task;
+
+
+Route::get('/', [TaskController::class,'index']);
+Route::post('/store' ,[TaskController::class,'store']);
+Route::post('delete/{id}' ,[TaskController::class,'delete']);
 
 
 
+Route::get('tasks', function () {
+    return view('tasks');
+    });
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/about',[TaskController::class,'hus']);
-
-Route::post('/about',[TaskController::class,'huss']);
-
-Route::get('/contact',[TaskController::class,'index']);
-
-
-
-
-// Route::get('/calculater',function (){
-
-//     return view('calculater');
-// });
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
